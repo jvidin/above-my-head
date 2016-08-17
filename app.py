@@ -16,7 +16,7 @@ class Radar(db.Model):
     altitude = db.Column(db.String(10))
     lat = db.Column(db.String(10))
     lon = db.Column(db.String(10))
-    timestamp = db.Column(db.String(20))
+    timer = db.Column(db.String(20))
 
 
 header = ['ID', 'FLIGHT', 'ALTITUDE', 'SQUAWK', 'LAT', 'LON', 'DATETIME']
