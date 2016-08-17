@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+import platform
 
 
 app = Flask(__name__)
@@ -24,6 +25,7 @@ header = ['ID', 'FLIGHT', 'ALTITUDE', 'SQUAWK', 'LAT', 'LON', 'DATETIME']
 
 @app.route('/')
 def hello_world():
+
     return render_template('layout.html')
 
 @app.route('/flight/')
@@ -47,5 +49,8 @@ def recent():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run(debug=False, host='0.0.0.0')
+
+    if platform.system() == 'Windows':
+        app.run(debug=True)
+    else:
+        app.run(debug=False, host='0.0.0.0', threaded=True)
