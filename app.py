@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 
 app = Flask(__name__)
@@ -28,15 +29,14 @@ def hello_world():
 @app.route('/flight/')
 def id_search():
     flight = request.args.get("flight")
-    query = Radar.query.filter_by(flight=flight.upper())
+    query = Radar.query.filter_by(flight=func.upper(flight))
     return render_template('flight.html', query=query, header=header)
 
 
 @app.route('/squawk/')
 def squawk_search():
     squawk = request.args.get("squawk")
-    squawk.upper()
-    query = Radar.query.filter_by(squawk=squawk.upper())
+    query = Radar.query.filter_by(squawk=func.upper(squawk))
     return render_template('squawk.html', query=query, header=header)
 
 
