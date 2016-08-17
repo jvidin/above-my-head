@@ -15,9 +15,10 @@ class Radar(db.Model):
     altitude = db.Column(db.String(10))
     lat = db.Column(db.String(10))
     lon = db.Column(db.String(10))
+    timestamp = db.Column(db.String(20))
 
 
-header = ['ID', 'FLIGHT', 'ALTITUDE', 'SQUAWK', 'LAT', 'LON']
+header = ['ID', 'FLIGHT', 'ALTITUDE', 'SQUAWK', 'LAT', 'LON', 'DATETIME']
 
 
 @app.route('/')
@@ -26,15 +27,24 @@ def hello_world():
 
 @app.route('/flight/')
 def id_search():
-    flight=request.args.get("flight")
-    query = Radar.query.filter_by(flight=flight)
+    flight = request.args.get("flight")
+    query = Radar.query.filter_by(flight=flight.upper())
     return render_template('flight.html', query=query, header=header)
+
 
 @app.route('/squawk/')
 def squawk_search():
-    squawk=request.args.get("squawk")
-    query = Radar.query.filter_by(squawk=squawk)
+    squawk = request.args.get("squawk")
+    squawk.upper()
+    query = Radar.query.filter_by(squawk=squawk.upper())
     return render_template('squawk.html', query=query, header=header)
+
+
+@app.route('/recent/')
+def recent():
+    query = Radar.query.order_by(Radar.id.desc()).limit(10)
+    return render_template('recent.html', query=query, header=header)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
