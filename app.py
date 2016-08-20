@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 import platform
@@ -28,11 +28,16 @@ def hello_world():
 
     return render_template('layout.html')
 
+
 @app.route('/flight/')
-def id_search():
-    flight = request.args.get("flight")
-    query = Radar.query.filter_by(flight=func.upper(flight))
-    return render_template('flight.html', query=query, header=header)
+def flight_search():
+    flight = request.args.get('flight')
+    if flight is None or len(flight) != 0:
+            print flight
+            query = Radar.query.filter_by(flight=func.upper(flight))
+            return render_template('flight.html', query=query, header=header)
+    else:
+        return render_template('flight.html', header=header)
 
 
 @app.route('/squawk/')
